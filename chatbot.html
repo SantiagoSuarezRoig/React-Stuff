@@ -2,6 +2,27 @@
 <html>
   <head>
     <title>Chat Bot</title>
+    <style>
+      .send-button{
+        background-color: rgb(25,135,84);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin-left: 10px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .input{
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 15px;
+        width: 80%
+      }
+
+
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -21,12 +42,17 @@
         function ChatInput({chatmessages,setChatMessages}){
 
           const [inputText, setInputText] = React.useState('')
+          const [isLoading,changeLoading] = React.useState(false)
 
           function saveInput(event){
             setInputText(event.target.value)
           }
 
-          function sendMessage(){
+          async function sendMessage(){
+
+            if(inputText === '' || isLoading)
+              return;
+
             const newMessage = [...chatmessages, {
               message: inputText,
               sender: 'user',
@@ -35,15 +61,36 @@
 
             setInputText('')
 
-            let response = Chatbot.getResponse(inputText)
-
+            
             setChatMessages([...newMessage, {
-              message: response,
+              message: 'Loading...',
               sender: 'robot',
               id: crypto.randomUUID()
             }])
+            
 
+            changeLoading(true)
+            let responseFromBack = await Chatbot.getResponseAsync(inputText) 
+            changeLoading(false)
+            
+
+            setChatMessages([...newMessage, {
+              message: responseFromBack,
+              sender: 'robot',
+              id: crypto.randomUUID()
+            }])
+              
           }
+
+          
+          function onkeydownInput(event){
+            if(event.key === 'Enter'){
+              sendMessage();
+              return;
+            }
+            if(event.key === 'Escape')
+              setInputText('');
+          }  
 
           return (
             <>
@@ -51,13 +98,17 @@
                 placeholder="Send a message to ChatBot"
                 size="30"
                 onChange={saveInput}
+                onKeyDown={onkeydownInput}
                 value={inputText}
+                className = "input"
                 />
 
               <button
               onClick={sendMessage}
+              className = "send-button"
               >Send</button>
             </>
+
           );
         }
 
@@ -94,6 +145,7 @@
 
 
 
+        
         function App(){
           const [chatmessages,setChatMessages] = React.useState([{
             message: 'hello ChatBot1',
