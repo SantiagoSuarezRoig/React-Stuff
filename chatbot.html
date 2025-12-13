@@ -6,8 +6,6 @@
 
       body{
         font-family: Arial;
-        margin-top: 0px;
-        margin-bottom: 0px;
       }
 
       .send-button{
@@ -42,7 +40,7 @@
         margin-bottom: 20px;
 
 
-        height: 100vh;
+        height: 90vh;
         display: flex;
         flex-direction: column;
       }
@@ -77,6 +75,19 @@
 
       .message-profile{
         width: 45px; 
+      }
+
+
+      .textbox-switcher-container{
+        display: flex;
+        justify-content: center;
+        padding: 0%;
+      }
+
+
+      .textbox-switcher{
+        cursor: pointer;
+        color: rgb(25,135,84);
       }
 
     </style>
@@ -191,9 +202,9 @@
           const chatMessagesRef = React.useRef(null);
 
           React.useEffect(()=>{
-            const chatContainerElem = chatMessagesRef.current;
+            const chatContainerElem = chatMessagesRef.current 
             if(chatContainerElem){
-              chatContainerElem.scrollTop = chatContainerElem.scrollHeight; 
+              chatContainerElem.scrollTop = chatContainerElem.scrollHeight 
             }
 
           },[chatmessages])
@@ -201,7 +212,6 @@
           return(
             <div className='messages-container'
             ref={chatMessagesRef}>
-
               {chatmessages.map((chatMessage)=>{
                 return (
                   <ChatMessage
@@ -210,7 +220,6 @@
                   key={chatMessage.id}
                   />);
                 })}
-                
             </div>
           );
         }
@@ -219,23 +228,7 @@
 
         
         function App(){
-          const [chatmessages,setChatMessages] = React.useState([{
-            message: 'hello ChatBot1',
-            sender: 'user',
-            id: 'id1'
-          },{
-            message: 'hello humano',
-            sender: 'robot',
-            id: 'id2'
-          },{
-            message: 'todo bien pa',
-            sender: 'user',
-            id: 'id3'
-          },{
-            message: 're bien socio',
-            sender: 'robot',
-            id: 'id4'
-          }])
+          const [chatmessages,setChatMessages] = React.useState([])
           const [inTop,changeInTop] = React.useState(true)
 
 
@@ -246,27 +239,33 @@
           return (
               <div className='app-container'>
 
-                {!inTop ?
+                {inTop ?
                 <>
-                  <ChatMessagesComponents
-                  chatmessages={chatmessages} />
-
                   <ChatInput
                   chatmessages={chatmessages}
                   setChatMessages={setChatMessages} />
+
+                  <ChatMessagesComponents
+                  chatmessages={chatmessages} />
+
                 </>
                   :
                 <>
+                
+                  <ChatMessagesComponents
+                  chatmessages={chatmessages} />
+
                   <ChatInput
                   chatmessages={chatmessages}
                   setChatMessages={setChatMessages} />
-
-                  <ChatMessagesComponents
-                  chatmessages={chatmessages} />
                 </>
                 }
-                  
-
+                
+                <div className= 'textbox-switcher-container'>
+                  <a onClick={moveTextBox} className= 'textbox-switcher'>
+                    Move textbox to {inTop? 'bottom':'top'}
+                  </a>
+                </div>
 
               </div>
               );
