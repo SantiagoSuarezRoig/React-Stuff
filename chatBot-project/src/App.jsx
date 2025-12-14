@@ -1,38 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './App.css'
 
+import {ChatInput} from './Components/ChatInput'
+import ChatMessagesComponents from './Components/ChatMessagesComponent'
+
+
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [chatmessages,setChatMessages] = useState([])
+  const [inTop,changeInTop] = useState(true)
+
+
+  function moveTextBox(){
+    changeInTop(!inTop)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
+      <div className='app-container'>
 
-      <h1>Vite + React</h1>
+        {inTop ?
+        <>
+          <ChatInput
+          chatmessages={chatmessages}
+          setChatMessages={setChatMessages} />
 
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+          {chatmessages.length == 0 && <p>Bienvenido al chatBot de los cojones</p> }
+
+          <ChatMessagesComponents
+          chatmessages={chatmessages} />
+
+        </>
+          :
+        <>
+        
+          <ChatMessagesComponents
+          chatmessages={chatmessages} />
+
+          {chatmessages.length == 0 && <p>Bienvenido al chatBot de los cojones</p> }
+
+          <ChatInput
+          chatmessages={chatmessages}
+          setChatMessages={setChatMessages} />
+        </>
+        }
+        
+        <div className= 'textbox-switcher-container'>
+          <a onClick={moveTextBox} className= 'textbox-switcher'>
+            Move textbox to {inTop? 'bottom':'top'}
+          </a>
+        </div>
+
       </div>
-      
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      );
 }
 
 export default App
