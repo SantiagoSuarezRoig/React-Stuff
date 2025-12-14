@@ -199,19 +199,29 @@
         
 
         function ChatMessagesComponents({chatmessages}){
-          const chatMessagesRef = React.useRef(null);
+          
+          const chatMessageRef = useAutoScroll([chatmessages])
 
-          React.useEffect(()=>{
-            const chatContainerElem = chatMessagesRef.current 
-            if(chatContainerElem){
-              chatContainerElem.scrollTop = chatContainerElem.scrollHeight 
-            }
+          function useAutoScroll(dependencie){
+            const chatMessagesRef = React.useRef(null);
+            
+            React.useEffect(()=>{
+              const ContainerElem = chatMessagesRef.current; 
+              if(ContainerElem){
+                ContainerElem.scrollTop = ContainerElem.scrollHeight ; 
+              }
+            },dependencie)
 
-          },[chatmessages])
+            return chatMessagesRef;
+          }
+
+
 
           return(
-            <div className='messages-container'
-            ref={chatMessagesRef}>
+            <div
+            className='messages-container'
+            ref={chatMessageRef}>
+
               {chatmessages.map((chatMessage)=>{
                 return (
                   <ChatMessage
@@ -220,6 +230,7 @@
                   key={chatMessage.id}
                   />);
                 })}
+
             </div>
           );
         }
@@ -245,6 +256,8 @@
                   chatmessages={chatmessages}
                   setChatMessages={setChatMessages} />
 
+                  {chatmessages.length == 0 && <p>Bienvenido al chatBot de los cojones</p> }
+
                   <ChatMessagesComponents
                   chatmessages={chatmessages} />
 
@@ -254,6 +267,8 @@
                 
                   <ChatMessagesComponents
                   chatmessages={chatmessages} />
+
+                  {chatmessages.length == 0 && <p>Bienvenido al chatBot de los cojones</p> }
 
                   <ChatInput
                   chatmessages={chatmessages}
