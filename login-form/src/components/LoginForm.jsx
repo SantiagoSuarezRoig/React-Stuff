@@ -1,16 +1,18 @@
+import { useState, useEffect } from 'react'
+import dayjs from 'dayjs'
 
 
 
 function LoginForm() {
-    const [isPassword,changeIsPassword] = React.useState(true)
-    const [timeNow,changeTimeNow] = React.useState(dayjs().format('HH:mm:ss'))
+    const [isPassword,changeIsPassword] = useState(true)
+    const [timeNow,changeTimeNow] = useState(dayjs().format('HH:mm:ss'))
 
     function showPassword(){
         changeIsPassword(!isPassword)
     }
 
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         setInterval(()=>{
             changeTimeNow(dayjs().format('HH:mm:ss'))
             console.log('This shit')
@@ -34,14 +36,5 @@ function LoginForm() {
     );
 }
 
-function App() {
-return (
-    <>
-    <p>Hello, welcome to my website</p>
-    <LoginForm />
-    </>
-);
-}
 
-const container = document.querySelector('.js-container');
-ReactDOM.createRoot(container).render(<App />);
+export default LoginForm

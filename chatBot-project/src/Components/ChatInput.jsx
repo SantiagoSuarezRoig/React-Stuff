@@ -54,7 +54,13 @@ export function ChatInput({chatmessages,setChatMessages}){
     }
     if(event.key === 'Escape')
       setInputText('');
-  }  
+  } 
+
+
+  function ClearMessages(){
+    localStorage.removeItem('Messages')
+    setChatMessages([])
+  }
 
   return (
     <div className="Chat-input-container">
@@ -71,6 +77,11 @@ export function ChatInput({chatmessages,setChatMessages}){
       onClick={sendMessage}
       className = "send-button"
       >Send</button>
+
+      <button
+      onClick={ClearMessages}
+      className = "send-button"
+      >Clear</button>
     </div>
 
   );

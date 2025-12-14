@@ -7,7 +7,7 @@ import './ChatMessagesComponent.css'
 
 function ChatMessagesComponents({chatmessages}){
   
-  const chatMessageRef = useAutoScroll([chatmessages])
+  const chatMessageRef = useAutoScroll(chatmessages)
 
   function useAutoScroll(dependencie){
     const chatMessagesRef = useRef(null);
@@ -17,7 +17,7 @@ function ChatMessagesComponents({chatmessages}){
       if(ContainerElem){
         ContainerElem.scrollTop = ContainerElem.scrollHeight ; 
       }
-    },dependencie)
+    },[dependencie])
 
     return chatMessagesRef;
   }

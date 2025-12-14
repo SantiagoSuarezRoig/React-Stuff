@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css'
 
 import {ChatInput} from './Components/ChatInput'
@@ -7,9 +7,13 @@ import ChatMessagesComponents from './Components/ChatMessagesComponent'
 
 
 function App() {
-  const [chatmessages,setChatMessages] = useState([])
+  const chatMessagesFromStorage = JSON.parse(localStorage.getItem('Messages')) || []  
+  const [chatmessages,setChatMessages] = useState(chatMessagesFromStorage)
   const [inTop,changeInTop] = useState(true)
 
+  useEffect(()=>{
+    localStorage.setItem('Messages',JSON.stringify(chatmessages))
+  },[chatmessages])
 
   function moveTextBox(){
     changeInTop(!inTop)
